@@ -14,11 +14,42 @@ app.get("/", (req, res) => {
 })
 
 
-app.post("/authors", (req, res) => {
+app.post("/authors", async (req, res) => {
   console.log(`body: ${req.body}`)
-  Author.create(req.body).then(() => {
+  try {
+    await Author.create(req.body)
     return res.json({message: "Author created"})
-  })
+  } catch (e) {
+    console.log(e)
+    res.json(e)
+  }
+})
+
+app.get("/authors", async (req, res) => {
+  let authors = await Author.findAll({attributes: ['id', 'name']})
+  res.json(authors)
+})
+
+app.get("/authors/:id", async (req, res) => {
+  try {
+    const authorId = req.params.id
+    const author = await Author.findOne({ where: {id: authorId}})
+    return res.json(author)
+  } catch (e) {
+    console.log(`detailed author error: ${e}`)
+    res.json(e)
+  }
+})
+
+app.delete("/authors/:id", async (req, res) => {
+  const authorId = req.params.id
+  try {
+    await Author.destroy({where: { id: authorId }})
+    res.json({message: `author ${authorId} deleted`})
+  } catch (e) {
+    console.log(`error while deleting author with id ${authorId}: ${e}`)
+    res.json(e)
+  }
 })
 
 app.listen(3000, () => {
