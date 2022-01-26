@@ -1,7 +1,9 @@
 const Author = require("../../DB/models/Author")
+const {getAuthorsWhereClause} = require("./services")
 
 async function createAuthorHandler(req, res) {
   console.log('authors body:', req.body)
+  // TODO валидация входных данных
   try {
     await Author.create(req.body)
     return res.json({message: "Author created"})
@@ -13,7 +15,13 @@ async function createAuthorHandler(req, res) {
 
 async function getAuthorsHandler(req, res) {
   try {
-    let authors = await Author.findAll({ attributes: ["id", "name"] })
+    console.log("query: ", req.query)
+
+    let authors = await Author.findAll({
+      // attributes: ["id", "name"],
+      order: [["id", "desc"]],
+      where: getAuthorsWhereClause(req.query)
+    })
     res.json(authors)
   } catch (e) {
     console.log(e)

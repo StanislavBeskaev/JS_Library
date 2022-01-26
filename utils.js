@@ -1,4 +1,5 @@
 const Author = require("./DB/models/Author")
+const {Op} = require("sequelize")
 
 function randomNumber(min, max) {
   return Math.round(min + Math.random() * (max - min))
@@ -19,9 +20,35 @@ async function createTestAuthors(number) {
 
 async function calculateTotalAuthorsBirthYear() {
   const authors = await Author.findAll()
-  const total = authors.reduce((total, author) => total + author.birth_year, 0)
-  return total
+  return authors.reduce((total, author) => total + author.birth_year, 0)
+}
+
+class NumberGetParam {
+  constructor(attribute, operator) {
+    this.attribute = attribute
+    this.operator = operator
+  }
+}
+
+// Получение объекта с данными фильтрации для атрибута по переданному списку объектов NumberGetParam, возвращает объект
+// {need, clause}, где need - флаг необходимости фильтрации, clause - sequelize выражение фильтрации(where)
+function getWhereDataByNumberParams(query, numberParams,) {
+  let clause = {}
+  let need = false
+  for (let numberParam of numberParams) {
+    const paramString = `${numberParam.attribute}__${numberParam.operator}`
+    if (query?.[paramString]) {
+      need = true
+      clause = {...clause, [Op[numberParam.operator]]: query[paramString]}
+    }
+  }
+  return {need, clause}
 }
 
 
-module.exports = { createTestAuthors, calculateTotalAuthorsBirthYear }
+module.exports = {
+  createTestAuthors,
+  calculateTotalAuthorsBirthYear,
+  getWhereDataByNumberParams,
+  NumberGetParam
+}
