@@ -1,4 +1,5 @@
 const Author = require("./DB/models/Author")
+const Book = require("./DB/models/Book")
 const {Op} = require("sequelize")
 
 const GTE_OPERATOR = "gte"
@@ -19,6 +20,21 @@ async function createTestAuthors(number) {
     })
   }
   await Author.bulkCreate(newAuthors)
+}
+
+async function createTestBooks(number) {
+  const newBooks = []
+  const authorCount = await Author.count()
+  for(let i = 1; i <= number; i++) {
+    newBooks.push({
+      name: `Название тестовой книги ${i}`,
+      author: randomNumber(1, authorCount),
+      isbn: `test-isbn-${i}`,
+      issue_year: randomNumber(1, new Date().getFullYear()),
+      page_count: randomNumber(1, 479)
+    })
+  }
+  await Book.bulkCreate(newBooks)
 }
 
 async function calculateTotalAuthorsBirthYear() {
@@ -49,4 +65,5 @@ module.exports = {
   createTestAuthors,
   calculateTotalAuthorsBirthYear,
   getWhereDataByNumberParam,
+  createTestBooks
 }

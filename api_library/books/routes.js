@@ -1,10 +1,11 @@
 const express = require("express")
+const Book = require("../../DB/models/Book")
+const { createBookHandler, getBooksHandler } = require("./handlers")
 const router = express.Router()
 
 
 router.route("/")
-  .get((req, res) => {
-    res.json({message: "Тут будут книги"})
-  })
+  .get(getBooksHandler)
+  .post(createBookHandler)
 
 module.exports = router

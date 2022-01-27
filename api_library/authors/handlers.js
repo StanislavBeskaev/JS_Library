@@ -5,8 +5,8 @@ async function createAuthorHandler(req, res) {
   console.log('authors body:', req.body)
   // TODO валидация входных данных
   try {
-    await Author.create(req.body)
-    return res.json({message: "Author created"})
+    const newAuthor = await Author.create(req.body)
+    return res.json(newAuthor)
   } catch (e) {
     console.log(e)
     res.json(e)
@@ -17,7 +17,7 @@ async function getAuthorsHandler(req, res) {
   try {
     console.log("query: ", req.query)
 
-    let authors = await Author.findAll({
+    const authors = await Author.findAll({
       // attributes: ["id", "name"],
       order: [["id", "desc"]],
       where: getAuthorsWhereClause(req.query)

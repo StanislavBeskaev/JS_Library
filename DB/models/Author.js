@@ -13,7 +13,7 @@ Author.init({
     allowNull: false
   },
   birth_year: {
-    type: DataTypes.NUMBER,
+    type: DataTypes.INTEGER,
     allowNull: false
   }
 }, {
