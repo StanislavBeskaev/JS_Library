@@ -18,7 +18,7 @@ async function getBooksHandler(req, res) {
       order: [["id", "desc"]],
       where: geBooksWhereClause(req.query)
     })
-    return res.json(books)
+    return res.json({count: books.length, results: books})
   } catch (e) {
     return res.json(e)
   }

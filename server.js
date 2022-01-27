@@ -4,6 +4,7 @@ const {createTestAuthors, calculateTotalAuthorsBirthYear, createTestBooks} = req
 const apiLibraryRouter = require("./api_library/libraryRouter")
 const Author = require("./DB/models/Author")
 const Book = require("./DB/models/Book")
+const cors = require("cors")
 
 sequelize.sync().then(async () => {
   const authorCount = await Author.count()
@@ -25,6 +26,7 @@ sequelize.sync().then(async () => {
 const app = express()
 
 app.use(express.json())
+app.use(cors())
 app.use("/api_library", apiLibraryRouter)
 
 
@@ -32,6 +34,6 @@ app.get("/", (req, res) => {
   return res.json({message: "Hello from Express"})
 })
 
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log("JS Library API is running")
 })
