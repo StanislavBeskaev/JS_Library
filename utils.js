@@ -1,6 +1,9 @@
 const Author = require("./DB/models/Author")
 const {Op} = require("sequelize")
 
+const GTE_OPERATOR = "gte"
+const LTE_OPERATOR = "lte"
+
 function randomNumber(min, max) {
   return Math.round(min + Math.random() * (max - min))
 }
@@ -23,25 +26,21 @@ async function calculateTotalAuthorsBirthYear() {
   return authors.reduce((total, author) => total + author.birth_year, 0)
 }
 
-class NumberGetParam {
-  constructor(attribute, operator) {
-    this.attribute = attribute
-    this.operator = operator
-  }
-}
-
-// Получение объекта с данными фильтрации для атрибута по переданному списку объектов NumberGetParam, возвращает объект
-// {need, clause}, где need - флаг необходимости фильтрации, clause - sequelize выражение фильтрации(where)
-function getWhereDataByNumberParams(query, numberParams,) {
+// Получение объекта с данными фильтрации для числового атрибута numberParam, возвращает объект
+// {need, clause}, где need - флаг необходимости фильтрации по атрибуту,
+// clause - sequelize выражение фильтрации(where) для этого атрибута
+function getWhereDataByNumberParam(query, numberParam,) {
   let clause = {}
   let need = false
-  for (let numberParam of numberParams) {
-    const paramString = `${numberParam.attribute}__${numberParam.operator}`
-    if (query?.[paramString]) {
+  const operators = [GTE_OPERATOR, LTE_OPERATOR]
+
+  for (let operator of operators) {
+    const ParamString = `${numberParam}__${operator}`
+    if (query?.[ParamString]) {
       need = true
-      clause = {...clause, [Op[numberParam.operator]]: query[paramString]}
-    }
-  }
+      clause = {...clause, [Op[operator]]: query[ParamString]}
+    }}
+
   return {need, clause}
 }
 
@@ -49,6 +48,5 @@ function getWhereDataByNumberParams(query, numberParams,) {
 module.exports = {
   createTestAuthors,
   calculateTotalAuthorsBirthYear,
-  getWhereDataByNumberParams,
-  NumberGetParam
+  getWhereDataByNumberParam,
 }
