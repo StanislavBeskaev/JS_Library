@@ -6,7 +6,6 @@ const Author = require("./DB/models/Author")
 const Book = require("./DB/models/Book")
 
 sequelize.sync().then(async () => {
-  Book.sync({force:true})
   const authorCount = await Author.count()
   if (authorCount === 0) {
     await createTestAuthors(100)
