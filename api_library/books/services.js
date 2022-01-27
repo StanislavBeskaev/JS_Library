@@ -16,10 +16,6 @@ function geBooksWhereClause(query) {
     whereClause["author"] = query.author
   }
 
-  if (query?.name) {
-    whereClause["name"] = {[Op.like]: `%${query.name}%`}
-  }
-
   console.log("whereClause:" , whereClause)
   return whereClause
 }
