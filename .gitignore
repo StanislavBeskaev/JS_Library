@@ -1,3 +1,4 @@
 node_modules
 library.sqlite
 frontend/node_modules
+frontend/build

@@ -4,7 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "devStart": "nodemon server"
+    "devStart": "nodemon server",
+    "frontend:install": "npm install --prefix frontend",
+    "frontend:build": "npm run build --prefix frontend",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
