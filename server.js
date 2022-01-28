@@ -30,10 +30,6 @@ app.use(cors())
 app.use("/api_library", apiLibraryRouter)
 
 
-app.get("/", (req, res) => {
-  return res.json({message: "Hello from Express"})
-})
-
 app.listen(3001, () => {
   console.log("JS Library API is running")
 })
