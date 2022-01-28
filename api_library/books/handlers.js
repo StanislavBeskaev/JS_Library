@@ -58,9 +58,21 @@ async function deleteBookHandler(req, res) {
   }
 }
 
+async function changeBookHandler(req, res) {
+  const bookId = req.params.id
+  try {
+    console.log(`trying to change book with id=${bookId}, with data:`, req.body)
+    const changedBook = await Book.update(req.body, {where: {id: bookId}})
+    res.json(changedBook)
+  } catch (e) {
+    res.json(e)
+  }
+}
+
 module.exports = {
   createBookHandler,
   getBooksHandler,
   getDetailedBookHandler,
-  deleteBookHandler
+  deleteBookHandler,
+  changeBookHandler
 }

@@ -3,7 +3,8 @@ const {
   createBookHandler,
   getBooksHandler,
   getDetailedBookHandler,
-  deleteBookHandler
+  deleteBookHandler,
+  changeBookHandler,
 } = require("./handlers")
 const router = express.Router()
 
@@ -15,5 +16,6 @@ router.route("/")
 router.route("/:id")
   .get(getDetailedBookHandler)
   .delete(deleteBookHandler)
+  .put(changeBookHandler)
 
 module.exports = router
